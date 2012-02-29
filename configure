@@ -12753,21 +12753,6 @@ fi
 done
 
 
-for ac_func in printf sprintf fprintf snprintf vfprintf vsprintf vsnprintf sscanf
-do :
-  as_ac_var=`$as_echo "ac_cv_func_$ac_func" | $as_tr_sh`
-ac_fn_c_check_func "$LINENO" "$ac_func" "$as_ac_var"
-if eval test \"x\$"$as_ac_var"\" = x"yes"; then :
-  cat >>confdefs.h <<_ACEOF
-#define `$as_echo "HAVE_$ac_func" | $as_tr_cpp` 1
-_ACEOF
-
-else
-  NEED_TRIO=1
-fi
-done
-
-
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for va_copy" >&5
 $as_echo_n "checking for va_copy... " >&6; }
 cat confdefs.h - <<_ACEOF >conftest.$ac_ext
@@ -14573,15 +14558,6 @@ case "$host" in
  CPPFLAGS="$CPPFLAGS -DWIN32"
  WIN32_EXTRA_LIBADD="-lws2_32"
  WIN32_EXTRA_LDFLAGS="-no-undefined"
-
-$as_echo "#define _WINSOCKAPI_ 1" >>confdefs.h
-
-
-$as_echo "#define snprintf _snprintf" >>confdefs.h
-
-
-$as_echo "#define vsnprintf _vsnprintf" >>confdefs.h
-
  if test "${PYTHON}" != ""
  then
    WIN32_EXTRA_PYTHON_LIBADD="-L${pythondir}/../../libs -lpython${PYTHON_VERSION//./}"
@@ -14597,6 +14573,47 @@ $as_echo "#define vsnprintf _vsnprintf" >>confdefs.h
 esac
 
 
+
+case "$host" in
+ *-*-mingw*)
+
+$as_echo "#define snprintf _snprintf" >>confdefs.h
+
+
+$as_echo "#define vsnprintf _vsnprintf" >>confdefs.h
+
+ for ac_func in printf sprintf fprintf _snprintf vfprintf vsprintf _vsnprintf sscanf
+do :
+  as_ac_var=`$as_echo "ac_cv_func_$ac_func" | $as_tr_sh`
+ac_fn_c_check_func "$LINENO" "$ac_func" "$as_ac_var"
+if eval test \"x\$"$as_ac_var"\" = x"yes"; then :
+  cat >>confdefs.h <<_ACEOF
+#define `$as_echo "HAVE_$ac_func" | $as_tr_cpp` 1
+_ACEOF
+
+else
+  NEED_TRIO=1
+fi
+done
+
+ ;;
+ *)
+ for ac_func in printf sprintf fprintf snprintf vfprintf vsprintf vsnprintf sscanf
+do :
+  as_ac_var=`$as_echo "ac_cv_func_$ac_func" | $as_tr_sh`
+ac_fn_c_check_func "$LINENO" "$ac_func" "$as_ac_var"
+if eval test \"x\$"$as_ac_var"\" = x"yes"; then :
+  cat >>confdefs.h <<_ACEOF
+#define `$as_echo "HAVE_$ac_func" | $as_tr_cpp` 1
+_ACEOF
+
+else
+  NEED_TRIO=1
+fi
+done
+
+ ;;
+esac
 
 
 
