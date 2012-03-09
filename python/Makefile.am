@@ -21,6 +21,7 @@ EXTRA_DIST = 			\
 	libxml.py		\
 	libxml2-python-api.xml
 
+libxml2mod_la_CFLAGS = @WIN32_EXTRA_PYTHON_CFLAGS@
 libxml2mod_la_LDFLAGS = @CYGWIN_EXTRA_LDFLAGS@ @WIN32_EXTRA_LDFLAGS@ -module -avoid-version 
 
 if WITH_PYTHON
