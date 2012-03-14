@@ -622,6 +622,7 @@ XML_LIBDIR
 XML_CFLAGS
 CYGWIN_EXTRA_PYTHON_LIBADD
 CYGWIN_EXTRA_LDFLAGS
+WIN32_EXTRA_PYTHON_CFLAGS
 WIN32_EXTRA_PYTHON_LIBADD
 WIN32_EXTRA_LDFLAGS
 WIN32_EXTRA_LIBADD
@@ -13409,6 +13410,28 @@ esac
 
 
 
+case "$host" in
+  *-*-mingw*|*-*-cygwin*)
+    platform_win32=yes
+    ;;
+  *)
+    platform_win32=no
+    ;;
+esac
+
+if test "x$cross_compiling" = "xyes" -a "x$platform_win32" = "xyes" ; then
+ if test "$PYTHON_INCLUDES" != ""; then
+  WITH_PYTHON_TRUE=
+  WITH_PYTHON_FALSE='#'
+else
+  WITH_PYTHON_TRUE='#'
+  WITH_PYTHON_FALSE=
+fi
+
+pythondir=$am_cv_python_pythondir
+PYTHON_SUBDIR=python
+PYTHON=`which python`
+else
 PYTHON_VERSION=
 PYTHON_INCLUDES=
 PYTHON_SITE_PACKAGES=
@@ -13541,6 +13564,7 @@ then
     PYTHON_SUBDIR=python
 else
     PYTHON_SUBDIR=
+fi
 fi
 
 
@@ -14553,6 +14577,7 @@ WIN32_EXTRA_LDFLAGS=
 CYGWIN_EXTRA_LDFLAGS=
 CYGWIN_EXTRA_PYTHON_LIBADD=
 WIN32_EXTRA_PYTHON_LIBADD=
+WIN32_EXTRA_PYTHON_CFLAGS=
 case "$host" in
  *-*-mingw*)
  CPPFLAGS="$CPPFLAGS -DWIN32"
@@ -14560,7 +14585,12 @@ case "$host" in
  WIN32_EXTRA_LDFLAGS="-no-undefined"
  if test "${PYTHON}" != ""
  then
-   WIN32_EXTRA_PYTHON_LIBADD="-L${pythondir}/../../libs -lpython${PYTHON_VERSION//./}"
+   if test "x$cross_compiling" != "xyes"; then
+     WIN32_EXTRA_PYTHON_LIBADD="-lpython${PYTHON_VERSION//./}"
+   else
+     WIN32_EXTRA_PYTHON_LIBADD="${PYTHON_LIBS}"
+     WIN32_EXTRA_PYTHON_CFLAGS="${PYTHON_INCLUDES}"
+   fi
  fi
  ;;
  *-*-cygwin*)
