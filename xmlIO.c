@@ -35,7 +35,7 @@
 #ifdef HAVE_ZLIB_H
 #include <zlib.h>
 #endif
-#ifdef HAVE_LZMA_H
+#ifdef HAVE_LIBLZMA
 #include <lzma.h>
 #endif
 
@@ -1309,7 +1309,7 @@ xmlGzfileClose (void * context) {
 }
 #endif /* HAVE_ZLIB_H */
 
-#ifdef HAVE_LZMA_H
+#ifdef HAVE_LIBLZMA
 /************************************************************************
  *									*
  *		I/O for compressed file accesses			*
@@ -2303,7 +2303,7 @@ xmlRegisterDefaultInputCallbacks(void) {
     xmlRegisterInputCallbacks(xmlGzfileMatch, xmlGzfileOpen,
 	                      xmlGzfileRead, xmlGzfileClose);
 #endif /* HAVE_ZLIB_H */
-#ifdef HAVE_LZMA_H
+#ifdef HAVE_LIBLZMA
     xmlRegisterInputCallbacks(xmlXzfileMatch, xmlXzfileOpen,
 	                      xmlXzfileRead, xmlXzfileClose);
 #endif /* HAVE_ZLIB_H */

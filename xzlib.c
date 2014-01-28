@@ -8,7 +8,7 @@
  */
 #define IN_LIBXML
 #include "libxml.h"
-#ifdef HAVE_LZMA_H
+#ifdef HAVE_LIBLZMA
 
 #include <string.h>
 #ifdef HAVE_ERRNO_H
@@ -752,4 +752,4 @@ __libxml2_xzclose(xzFile file)
     xmlFree(state);
     return ret ? ret : LZMA_OK;
 }
-#endif /* HAVE_LZMA_H */
+#endif /* HAVE_LIBLZMA */
